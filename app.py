@@ -1,4 +1,5 @@
 from flask import Flask, render_template, Response
+from flask_cors import CORS, cross_origin
 import cv2
 import pickle
 #from imutils.video import VideoStream
@@ -114,12 +115,14 @@ def gen_frames():  # generate frame by frame from camera
 
 
 @app.route('/video_feed')
+@cross_origin(supports_credentials=True)
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/')
+@cross_origin(supports_credentials=True)
 def index():
     """Video streaming home page."""
     return render_template('index.html')
